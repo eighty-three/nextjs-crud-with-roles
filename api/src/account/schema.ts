@@ -7,7 +7,7 @@ export const generate = Joi.object({
   role: Joi.string().valid(...roles).required()
 });
 
-export const update = Joi.object({
+export const changeRole = Joi.object({
   username: Joi.string().regex(/^[a-zA-Z0-9_]{1,29}$/).required(),
   role: Joi.string().valid(...roles).required()
 });
