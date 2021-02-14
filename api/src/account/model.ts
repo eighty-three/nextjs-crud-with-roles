@@ -1,5 +1,6 @@
 import db from '@utils/db';
 import { PreparedStatement as PS } from 'pg-promise';
+import { IUser } from './types';
 
 export const createAccount = async (
   username: string,
@@ -12,6 +13,15 @@ export const createAccount = async (
 
   query.values = [username, hash, role];
   await db.none(query);
+};
+
+export const getAccounts = async (
+): Promise<IUser[]|null> => {
+  const query = new PS({ name: 'get-accounts', text: '\
+    SELECT username, role FROM accounts'
+  });
+
+  return await db.manyOrNone(query);
 };
 
 export const deleteAccount = async (

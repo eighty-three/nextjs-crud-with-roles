@@ -23,6 +23,15 @@ export const deleteAccount: RequestHandler = async (req, res) => {
   }
 };
 
+export const getAccounts: RequestHandler = async (req, res) => {
+  try {
+    const accounts = await account.getAccounts();
+    res.status(200).json({ accounts });
+  } catch {
+    res.status(400).json({ message: 'Something went wrong' });
+  }
+};
+
 export const changePassword: RequestHandler = async (req, res) => {
   try {
     const { username, newPassword } = req.body;

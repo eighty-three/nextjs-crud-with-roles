@@ -20,6 +20,11 @@ router.post('/delete',
   account.deleteAccount
 );
 
+router.get('/list',
+  authToken.verifyRole(['admin']),
+  account.getAccounts
+);
+
 router.post('/changeRole',
   validator(accountSchema.changeRole, 'body'),
   authToken.verifyRole(['admin']),
