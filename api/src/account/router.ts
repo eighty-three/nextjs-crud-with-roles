@@ -2,7 +2,7 @@ import express from 'express';
 import validator from '@utils/validator';
 const router = express.Router();
 
-import { authToken } from '@authMiddleware/index';
+import { authToken, authAccount } from '@authMiddleware/index';
 
 import * as account from './controller';
 import * as accountSchema from './schema';
@@ -24,6 +24,13 @@ router.post('/changeRole',
   validator(accountSchema.changeRole, 'body'),
   authToken.verifyRole(['admin']),
   account.changeRole
+);
+
+router.post('/changePassword',
+  validator(accountSchema.changePassword, 'body'),
+  authToken.verifyToken,
+  authAccount.checkPassword,
+  account.changePassword
 );
 
 export default router;
