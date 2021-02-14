@@ -10,4 +10,7 @@ router.post('/verify', authToken.verifyToken, authAccount.verifyUser);
 import accountRouter from './account/router';
 router.use('/account', accountRouter);
 
+import authRouter from './auth/router';
+router.use('/auth', authRouter);
+
 export default router;
