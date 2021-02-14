@@ -15,48 +15,6 @@ describe('check username', () => {
   });
 });
 
-describe('check usernames', () => {
-  test('empty input', async () => {
-    const usernames: [] = [];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(false);
-  });
-
-  test('one input true', async () => {
-    await createAccount('dummy1', '123');
-
-    const usernames = ['dummy1'];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(true);
-  });
-
-  test('one input false', async () => {
-    const usernames = ['dummy2'];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(false);
-  });
-
-  test('multiple input one false', async () => {
-    const usernames = ['dummy1', 'dummy2'];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(false);
-  });
-
-  test('multiple input all false', async () => {
-    const usernames = ['dummy2', 'dummy3'];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(false);
-  });
-
-  test('multiple input all true', async () => {
-    await createAccount('dummy2', '123');
-    await createAccount('dummy3', '123');
-    const usernames = ['dummy1', 'dummy2', 'dummy3'];
-    const check = await account.checkUsernames(usernames);
-    expect(check).toBe(true);
-  });
-});
-
 describe('check password', () => {
   test('should fail because user doesnt exist', async () => {
     const user = await account.checkPassword('dummy4');
