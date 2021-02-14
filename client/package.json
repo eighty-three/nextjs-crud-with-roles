@@ -26,8 +26,8 @@
     "express": "^4.17.1",
     "http-proxy-middleware": "^1.0.6",
     "jsonwebtoken": "^8.5.1",
-    "ky": "^0.26.0",
-    "ky-universal": "^0.9.1",
+    "ky": "^0.24.0",
+    "ky-universal": "^0.8.2",
     "next": "^10.0.6",
     "next-plugin-preact": "^3.0.3",
     "nprogress": "^0.2.0",
@@ -36,6 +36,7 @@
     "prop-types": "^15.7.2",
     "react": "npm:@preact/compat@0.0.4",
     "react-dom": "npm:@preact/compat@0.0.4",
+    "react-hook-form": "^6.15.1",
     "sass": "^1.32.7"
   },
   "devDependencies": {
@@ -54,6 +55,7 @@
     "jsdom": "^16.4.0",
     "jsdom-global": "^3.0.2",
     "mutationobserver-shim": "^0.3.7",
-    "nodemon": "^2.0.7"
+    "nodemon": "^2.0.7",
+    "webpack": "^4.46.0"
   }
 }
