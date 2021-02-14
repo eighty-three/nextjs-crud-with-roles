@@ -14,16 +14,16 @@ router.post('/generate',
   account.generateAccount
 );
 
-router.post('/update',
-  validator(accountSchema.update, 'body'),
-  authToken.verifyRole(['admin']),
-  account.updateAccount
-);
-
 router.post('/delete',
   validator(accountSchema.deleteAccount, 'body'),
   authToken.verifyRole(['admin']),
   account.deleteAccount
+);
+
+router.post('/changeRole',
+  validator(accountSchema.changeRole, 'body'),
+  authToken.verifyRole(['admin']),
+  account.changeRole
 );
 
 export default router;

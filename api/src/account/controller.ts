@@ -13,16 +13,6 @@ export const generateAccount: RequestHandler = async (req, res) => {
   }
 };
 
-export const updateAccount: RequestHandler = async (req, res) => {
-  try {
-    const { username, role } = req.body;
-    await account.updateAccount(username, role);
-    res.status(200).json({ message: 'Role successfully changed' });
-  } catch {
-    res.status(400).json({ message: 'Something went wrong' });
-  }
-};
-
 export const deleteAccount: RequestHandler = async (req, res) => {
   try {
     const { username } = req.body;
@@ -43,3 +33,14 @@ export const changePassword: RequestHandler = async (req, res) => {
     res.status(400).json({ message: 'Something went wrong' });
   }
 };
+
+export const changeRole: RequestHandler = async (req, res) => {
+  try {
+    const { username, role } = req.body;
+    await account.changeRole(username, role);
+    res.status(200).json({ message: 'Role successfully changed' });
+  } catch {
+    res.status(400).json({ message: 'Something went wrong' });
+  }
+};
+

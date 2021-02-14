@@ -14,18 +14,6 @@ export const createAccount = async (
   await db.none(query);
 };
 
-export const updateAccount = async (
-  username: string,
-  role: string
-): Promise<void> => {
-  const query = new PS({ name: 'update-account', text: '\
-    UPDATE accounts SET role=$1 WHERE name=$2'
-  });
-
-  query.values = [role, username];
-  await db.none(query);
-};
-
 export const deleteAccount = async (
   username: string
 ): Promise<void> => {
@@ -58,4 +46,16 @@ export const getRole = async (
 
   query.values = [username];
   await db.oneOrNone(query);
+};
+
+export const changeRole = async (
+  username: string,
+  role: string
+): Promise<void> => {
+  const query = new PS({ name: 'change-role', text: '\
+    UPDATE accounts SET role=$1 WHERE name=$2'
+  });
+
+  query.values = [role, username];
+  await db.none(query);
 };
