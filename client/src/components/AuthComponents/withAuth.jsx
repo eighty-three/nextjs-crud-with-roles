@@ -7,26 +7,34 @@ const RedirectComponentPropTypes = {
 };
 
 const RedirectComponent = ({ redirectAction }) => {
-  const [text, setText] = useState('');
+  const [redirectState, setRedirectState] = useState({ newPath: null, text: null });
+  const prevPath = useRouter().pathname;
 
   useEffect(() => {
-    const loadingText = (redirectAction === 'loggedIn')
-      ? 'Already logged in'
-      : 'Not authenticated';
+    switch (redirectAction) {
+      case 'loggedIn': {
+        setRedirectState({ newPath: '/dashboard', text: 'Already logged in' });
+        break;
+      }
 
-    setText(loadingText);
+      case 'notAuthorized': {
+        setRedirectState({ newPath: '/dashboard', text: 'Not authorized' });
+        break;
+      }
+
+      case 'notAuthenticated': {
+        setRedirectState({ newPath: `/login?redirect=${prevPath}`, text: 'Not authenticated' });
+        break;
+      }
+    }
   }, []);
 
   useEffect(() => {
-    const prevPath = useRouter().pathname;
-    const newPath = (redirectAction === 'loggedIn')
-      ? '/dashboard'
-      : `/login?redirect=${prevPath}`;
-    Router.replace(newPath);
-  }, []);
+    if (redirectState.newPath) Router.replace(redirectState.newPath);
+  }, [redirectState.newPath]);
 
   return (
-    <h1>{text}</h1>
+    <h1>{redirectState.text}</h1>
   );
 };
 
@@ -40,10 +48,10 @@ const withAuthComponent = (Component, redirectAction, allowedRoles) => {
 
     } else if (redirectAction === 'protectRoute') {
       // if payload has no username or role
-      if (!username || !role) return <RedirectComponent redirectAction={'protectRoute'} />;
+      if (!username || !role) return <RedirectComponent redirectAction={'notAuthenticated'} />;
 
       // if payload has username and role but user doesn't have the required role
-      if (!allowedRoles.includes(role)) return <RedirectComponent redirectAction={'protectRoute'} />;
+      if (!allowedRoles.includes(role)) return <RedirectComponent redirectAction={'notAuthorized'} />;
     }
 
     return <Component {...data.props}/>;
