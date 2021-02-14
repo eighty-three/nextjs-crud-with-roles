@@ -1,7 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
-import styles from './Navbar.module.css';
+import styles from './index.module.scss';
 
 const siteTitle = 'CRUD WITH ROLES';
 
