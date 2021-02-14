@@ -5,7 +5,7 @@ import { IUser } from './types';
 export const createAccount = async (
   username: string,
   hash: string,
-  role = 'user'
+  role = 'new'
 ): Promise<void> => {
   const query = new PS({ name: 'create-account', text: '\
     INSERT INTO accounts (username, password, role) VALUES ($1, $2, $3)'
@@ -49,13 +49,13 @@ export const changePassword = async (
 
 export const getRole = async (
   username: string
-): Promise<string|void> => {
+): Promise<{role: string}|null> => {
   const query = new PS({ name: 'get-role', text: '\
     SELECT role FROM accounts WHERE username=$1'
   });
 
   query.values = [username];
-  await db.oneOrNone(query);
+  return await db.oneOrNone(query);
 };
 
 export const changeRole = async (
