@@ -33,7 +33,7 @@ const Dashboard = (props) => {
 Dashboard.propTypes = propTypes;
 
 export default withAuthComponent(Dashboard, 'protectRoute', ['new', 'user', 'mod', 'admin']);
-export const getServerSideProps = withAuthServerSideProps(async (ctx, username, role) => {
+export const getServerSideProps = withAuthServerSideProps(async ({ username, role }) => {
   return {
     props:
       {
