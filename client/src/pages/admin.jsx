@@ -5,6 +5,7 @@ import Head from 'next/head';
 import Layout, { siteTitle } from '@/components/Layout';
 import withAuthComponent from '@/components/AuthComponents/withAuth';
 import withAuthServerSideProps from '@/components/AuthComponents/withAuthGSSP';
+import AdminPanelTabs from '@/components/AdminPanelTabs';
 
 const propTypes = {
   username: PropTypes.string,
@@ -13,8 +14,7 @@ const propTypes = {
 
 const AdminPanel = (props) => {
   const {
-    username,
-    role
+    username
   } = props;
 
   return (
@@ -23,9 +23,7 @@ const AdminPanel = (props) => {
         <title>{siteTitle}</title>
       </Head>
       <section>
-        <h1>admin</h1>
-        <h1>{username}</h1>
-        <h1>{role}</h1>
+        <AdminPanelTabs />
       </section>
     </Layout>
   );
