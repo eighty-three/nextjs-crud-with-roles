@@ -34,12 +34,11 @@ const AdminPanel = (props) => {
 AdminPanel.propTypes = propTypes;
 
 export default withAuthComponent(AdminPanel, 'protectRoute', ['admin']);
-export const getServerSideProps = withAuthServerSideProps(async (ctx, username, role) => {
+export const getServerSideProps = withAuthServerSideProps(async ({ username }) => {
   return {
     props:
       {
-        username,
-        role
+        username
       }
   };
 });

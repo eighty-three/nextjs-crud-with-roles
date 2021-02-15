@@ -9,7 +9,7 @@ const withAuthServerSideProps = (getServerSidePropsFunc) => {
           {
             username,
             role,
-            data: await getServerSidePropsFunc(ctx, username, role)
+            data: await getServerSidePropsFunc({ ctx, username, role })
           }
       };
     }
