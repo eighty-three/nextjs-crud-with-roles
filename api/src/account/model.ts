@@ -18,7 +18,8 @@ export const createAccount = async (
 export const getAccounts = async (
 ): Promise<IUser[]|null> => {
   const query = new PS({ name: 'get-accounts', text: '\
-    SELECT username, role FROM accounts'
+    SELECT username, role FROM accounts \
+    ORDER BY date asc'
   });
 
   return await db.manyOrNone(query);
