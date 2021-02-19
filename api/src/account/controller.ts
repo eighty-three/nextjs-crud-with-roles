@@ -43,6 +43,17 @@ export const changePassword: RequestHandler = async (req, res) => {
   }
 };
 
+export const setPassword: RequestHandler = async (req, res) => {
+  try {
+    const { username, password } = req.body;
+    const hash = await argon2.hash(password);
+    await account.changePassword(username, hash);
+    res.status(200).json({ message: 'Password successfully changed' });
+  } catch {
+    res.status(400).json({ error: 'Something went wrong' });
+  }
+};
+
 export const changeRole: RequestHandler = async (req, res) => {
   try {
     const { username, role } = req.body;
