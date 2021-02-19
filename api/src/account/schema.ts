@@ -21,3 +21,8 @@ export const changePassword = Joi.object({
   password: Joi.string().min(1).max(200).required(),
   newPassword: Joi.string().min(1).max(200).required()
 });
+
+export const setPassword = Joi.object({
+  username: Joi.string().regex(/^[a-zA-Z0-9_]{1,29}$/).required(),
+  password: Joi.string().min(1).max(200).required()
+});

@@ -38,4 +38,10 @@ router.post('/changePassword',
   account.changePassword
 );
 
+router.post('/setPassword',
+  validator(accountSchema.setPassword, 'body'),
+  authToken.verifyRole(['admin']),
+  account.setPassword
+);
+
 export default router;
