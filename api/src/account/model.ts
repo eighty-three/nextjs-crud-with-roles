@@ -28,7 +28,7 @@ export const deleteAccount = async (
   username: string
 ): Promise<void> => {
   const query = new PS({ name: 'delete-account', text: '\
-    DELETE FROM accounts WHERE name=$1'
+    DELETE FROM accounts WHERE username=$1'
   });
 
   query.values = [username];
@@ -63,7 +63,7 @@ export const changeRole = async (
   role: string
 ): Promise<void> => {
   const query = new PS({ name: 'change-role', text: '\
-    UPDATE accounts SET role=$1 WHERE name=$2'
+    UPDATE accounts SET role=$1 WHERE username=$2'
   });
 
   query.values = [role, username];
