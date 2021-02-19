@@ -1,5 +1,5 @@
 import Joi from '@hapi/joi';
-const roles = ['new', 'user', 'moderator', 'admin'];
+const roles = ['new', 'user', 'mod', 'admin'];
 
 export const generate = Joi.object({
   username: Joi.string().regex(/^[a-zA-Z0-9_]{1,29}$/).required(),
