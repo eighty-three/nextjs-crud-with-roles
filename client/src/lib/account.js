@@ -9,9 +9,9 @@ export const getAccounts = async (ctx) => {
 
     const req = await customGet.get(`${api}/list`);
     const response = await req.json();
-    return response.accounts;
+    return (response.error) ? [] : response.accounts;
   } catch (err) {
-    return { error: 'Something went wrong' };
+    return [];
   }
 };
 
