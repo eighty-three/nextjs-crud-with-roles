@@ -20,7 +20,7 @@ const Accounts = (props) => {
   const {
     accounts
   } = props;
-  const [accountsArr, setArr] = useState(accounts.slice(0, 10));
+  const [accountsArr, setArr] = useState(accounts);
 
   return (
     <AccountsContext.Provider value={setArr}>
