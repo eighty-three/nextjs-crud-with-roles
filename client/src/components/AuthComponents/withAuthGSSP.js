@@ -1,9 +1,11 @@
 import authCheck from '@/lib/token';
 
-const withAuthServerSideProps = (getServerSidePropsFunc) => {
+const withAuthServerSideProps = (getServerSidePropsFunc, protect) => {
   return async (ctx) => {
     const { username, role } = await authCheck(ctx);
-    if (getServerSidePropsFunc) {
+    // if protect, prevent functions inside GSSP from running if no username
+    // is there ever a reason NOT to use this?
+    if (protect ? (getServerSidePropsFunc && username) : getServerSidePropsFunc) {
       return {
         props:
           {
