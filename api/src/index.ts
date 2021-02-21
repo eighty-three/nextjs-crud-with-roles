@@ -19,10 +19,3 @@ if (config.NODE_ENV === 'production') {
     logger.info(`http server listening on PORT ${config.PORT}`);
   });
 }
-
-//import wsApp from './ws';
-//wsApp.listen(Number(config.WS_PORT), (listenSocket) => {
-//if (listenSocket) {
-//logger.info(`ws server listening on PORT ${config.WS_PORT}`);
-//}
-//});
