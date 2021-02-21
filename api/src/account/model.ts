@@ -5,13 +5,15 @@ import { IUser } from './types';
 export const createAccount = async (
   username: string,
   hash: string,
-  role = 'new'
+  session: string,
+  role: string
 ): Promise<void> => {
   const query = new PS({ name: 'create-account', text: '\
-    INSERT INTO accounts (username, password, role) VALUES ($1, $2, $3)'
+    INSERT INTO accounts (username, password, session, role)\
+    VALUES ($1, $2, $3, $4)'
   });
 
-  query.values = [username, hash, role];
+  query.values = [username, hash, session, role];
   await db.none(query);
 };
 
