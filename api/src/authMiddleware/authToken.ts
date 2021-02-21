@@ -2,13 +2,8 @@ import { RequestHandler } from 'express';
 import config from '@utils/config';
 import { verify } from 'jsonwebtoken';
 import cookie from 'cookie';
-
-interface IPayload {
-  username?: string;
-  role?: string;
-  iat?: number;
-  exp?: number;
-}
+import * as token from '../auth/token';
+import { IPayload } from '../auth/types';
 
 export const verifyToken: RequestHandler = async (req, res, next) => {
   if (!req.headers.cookie) {
@@ -17,15 +12,30 @@ export const verifyToken: RequestHandler = async (req, res, next) => {
   }
 
   const cookies = cookie.parse(req.headers.cookie);
-  verify(cookies.auth, config.SECRET_JWT, async function (err, decoded: IPayload|undefined) {
-    if (err && !decoded) {
-      res.status(401).json({ error: 'You are not authenticated' });
-      return;
-    } else if (decoded) {
-      next();
-      return;
+  verify(cookies.access, config.SECRET_JWT,
+    async (err, decoded: IPayload|undefined) => {
+      if (err) {
+        const refreshToken = await token.getRefreshToken(req);
+        const check = await token.verifyRefreshToken(refreshToken);
+
+        // if error, check if refreshToken is included and is legit
+        if (!check) {
+          res.clearCookie('refresh', { path: '/' });
+          res.status(401).json({ error: 'You are not authenticated' });
+        } else {
+          if (refreshToken) await token.setAccessToken(refreshToken, res);
+          next();
+        }
+
+        return;
+      } else if (decoded) {
+        next();
+        return;
+      }
+
+      res.status(400).json({ error: 'Something went wrong' });
     }
-  });
+  );
 };
 
 export const verifyRole = (roles: string[]): RequestHandler => {
@@ -37,20 +47,42 @@ export const verifyRole = (roles: string[]): RequestHandler => {
       }
 
       const cookies = cookie.parse(req.headers.cookie);
-      verify(cookies.auth, config.SECRET_JWT, async function (err, decoded: IPayload|undefined) {
-        if (err && !decoded) {
-          res.status(401).json({ error: 'You are not authenticated' });
-          return;
-        } else if (decoded) {
-          const role = decoded.role as string;
-          if (!roles.includes(role)) {
-            res.status(401).json({ error: 'You are not authenticated' });
+      verify(cookies.access, config.SECRET_JWT,
+        async (err, decoded: IPayload|undefined) => {
+          if (err) {
+            const refreshToken = await token.getRefreshToken(req);
+            const check = await token.verifyRefreshToken(refreshToken);
+
+            // if error, check if refreshToken is included and is legit
+            if (!check) {
+              res.clearCookie('refresh', { path: '/' });
+              res.status(401).json({ error: 'You are not authenticated' });
+            } else {
+              const role = refreshToken?.role as string;
+              if (!roles.includes(role)) {
+                res.status(401).json({ error: 'You are not authenticated' });
+                return;
+              }
+
+              if (refreshToken) await token.setAccessToken(refreshToken, res);
+              next();
+            }
+
+            return;
+          } else if (decoded) {
+            const role = decoded.role as string;
+            if (!roles.includes(role)) {
+              res.status(401).json({ error: 'You are not authenticated' });
+              return;
+            }
+
+            next();
             return;
           }
+
+          res.status(400).json({ error: 'Something went wrong' });
         }
-      });
-      next();
-      return;
+      );
     } catch {
       res.status(400).json({ error: 'Something went wrong' });
     }
@@ -60,18 +92,27 @@ export const verifyRole = (roles: string[]): RequestHandler => {
 export const verifyExistingToken: RequestHandler = async (req, res, next) => {
   if (!req.headers.cookie) {
     next();
-    return;
   } else {
     const cookies = cookie.parse(req.headers.cookie);
-    verify(cookies.auth, config.SECRET_JWT, async function (err, decoded) {
-      if (err && !decoded) {
+    verify(cookies.access, config.SECRET_JWT, async function (err, decoded) {
+      if (err) {
+        const refreshToken = await token.getRefreshToken(req);
+        const check = await token.verifyRefreshToken(refreshToken);
+
+        if (!check) {
+          res.clearCookie('refresh', { path: '/' });
+          res.status(400).json({ error: 'Bad Request' });
+        } else {
+          if (refreshToken) await token.setAccessToken(refreshToken, res);
+          res.status(400).json({ error: 'Already logged in' });
+        }
+
         next();
-        return;
+      } else if (decoded) {
+        res.status(400).json({ error: 'Already logged in' });
       }
     });
   }
-
-  res.status(400).json({ error: 'Already logged in' });
 };
 
 export const getUsername = async (reqCookie: string|null): Promise<string|void> => {

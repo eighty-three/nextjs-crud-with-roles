@@ -5,6 +5,7 @@ const router = express.Router();
 import { authToken, authAccount } from '@authMiddleware/index';
 
 import * as auth from './controller';
+import * as token from './token';
 import * as authSchema from './schema';
 
 
@@ -25,6 +26,11 @@ router.post('/signup',
 router.post('/logout',
   validator(authSchema.logout, 'body'),
   auth.logout
+);
+
+router.get('/token',
+  authToken.verifyToken,
+  token.refreshAccessToken
 );
 
 export default router;
