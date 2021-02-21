@@ -49,4 +49,4 @@ export const getServerSideProps = withAuthServerSideProps(async ({ username, ctx
         username
       }
   };
-});
+}, true);
