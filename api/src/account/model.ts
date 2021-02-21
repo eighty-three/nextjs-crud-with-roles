@@ -50,13 +50,14 @@ export const changePassword = async (
 
 export const getRole = async (
   username: string
-): Promise<{role: string}|null> => {
+): Promise<string|null> => {
   const query = new PS({ name: 'get-role', text: '\
     SELECT role FROM accounts WHERE username=$1'
   });
 
   query.values = [username];
-  return await db.oneOrNone(query);
+  const data = await db.oneOrNone(query);
+  return data.role;
 };
 
 export const changeRole = async (
