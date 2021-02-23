@@ -2,9 +2,10 @@ CREATE EXTENSION citext;
 
 CREATE TABLE accounts (
   user_id SERIAL PRIMARY KEY,
-  username CITEXT NOT NULL,
+  role CITEXT NOT NULL,
+  username CITEXT NOT NULL UNIQUE,
+  name TEXT NOT NULL,
   password TEXT NOT NULL,
-  session CITEXT NOT NULL,
-  role TEXT NOT NULL,
+  session TEXT NOT NULL,
   date TIMESTAMP DEFAULT now()
 );

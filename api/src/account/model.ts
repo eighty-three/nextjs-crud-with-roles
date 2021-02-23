@@ -4,23 +4,24 @@ import { IUser } from './types';
 
 export const createAccount = async (
   username: string,
+  name: string,
   hash: string,
   session: string,
   role: string
 ): Promise<void> => {
   const query = new PS({ name: 'create-account', text: '\
-    INSERT INTO accounts (username, password, session, role)\
-    VALUES ($1, $2, $3, $4)'
+    INSERT INTO accounts (username, name, password, session, role)\
+    VALUES ($1, $2, $3, $4, $5)'
   });
 
-  query.values = [username, hash, session, role];
+  query.values = [username, name, hash, session, role];
   await db.none(query);
 };
 
 export const getAccounts = async (
 ): Promise<IUser[]|null> => {
   const query = new PS({ name: 'get-accounts', text: '\
-    SELECT username, role FROM accounts \
+    SELECT username, name, role FROM accounts \
     ORDER BY date asc'
   });
 

@@ -3,6 +3,7 @@ const roles = ['new', 'user', 'mod', 'admin'];
 
 export const generate = Joi.object({
   username: Joi.string().regex(/^[a-zA-Z0-9_]{1,29}$/).required(),
+  name: Joi.string().regex(/^[a-zA-Z ]{1,29}$/).required(),
   password: Joi.string().min(1).max(200).required(),
   role: Joi.string().valid(...roles).required()
 });

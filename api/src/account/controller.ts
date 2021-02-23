@@ -6,10 +6,10 @@ import * as auth from '../auth/model';
 
 export const generateAccount: RequestHandler = async (req, res) => {
   try {
-    const { username, password, role } = req.body;
+    const { username, name, password, role } = req.body;
     const hash = await argon2.hash(password);
     const session = nanoid(20);
-    await account.createAccount(username, hash, session, role);
+    await account.createAccount(username, name, hash, session, role);
     res.status(200).json({ message: 'Account successfully created' });
   } catch {
     res.status(400).json({ error: 'Something went wrong' });
