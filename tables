@@ -9,3 +9,23 @@ CREATE TABLE accounts (
   session TEXT NOT NULL,
   date TIMESTAMP DEFAULT now()
 );
+
+CREATE TABLE posts (
+  post_id SERIAL PRIMARY KEY,
+  user_id INT REFERENCES accounts(user_id) NOT NULL,
+  post TEXT NOT NULL,
+  title TEXT NOT NULL,
+  url TEXT NOT NULL UNIQUE,
+  tags INT [],
+  date TIMESTAMP DEFAULT now()
+);
+
+CREATE TABLE tags (
+  tag_id SERIAL PRIMARY KEY,
+  tag_name CITEXT NOT NULL UNIQUE
+);
+
+CREATE TABLE posts_tags (
+  post_id INT REFERENCES posts(post_id) ON DELETE CASCADE NOT NULL,
+  tags INT []
+);
