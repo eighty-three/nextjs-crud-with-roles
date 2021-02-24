@@ -15,7 +15,7 @@ router.post('/create',
 );
 
 router.get('/post/:url',
-  validator(contentSchema.getPost, 'param'),
+  validator(contentSchema.getPost, 'params'),
   content.getPost
 );
 
@@ -24,8 +24,8 @@ router.get('/posts',
   content.getPosts
 );
 
-router.get('/:user/posts',
-  validator(contentSchema.getUserPosts, 'param'),
+router.get(['/posts/:user', '/posts/:user/:page'],
+  validator(contentSchema.getUserPosts, 'params'),
   authToken.verifyToken,
   content.getUserPosts
 );

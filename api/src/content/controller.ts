@@ -32,7 +32,7 @@ export const getUserPosts: RequestHandler = async (req, res) => {
   try {
     const { username, role } = res.locals;
     const { user, page } = req.params;
-    const offset = (Number(page) - 1 <= 0)
+    const offset = (!page || Number(page) - 1 <= 0)
       ? 0
       : (Number(page) - 1) * 10;
 

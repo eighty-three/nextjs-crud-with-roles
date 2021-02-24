@@ -22,7 +22,7 @@ export const getPosts = Joi.object({
 
 export const getUserPosts = Joi.object({
   user: Joi.string().regex(/^[a-zA-Z0-9_]{1,29}$/).required(),
-  page: Joi.number().integer().min(0).max(99999).required()
+  page: Joi.string().regex(/^[0-9]{1,5}$/).optional()
 });
 
 export const deletePost = Joi.object({
