@@ -48,11 +48,11 @@ export const login: RequestHandler = async (req, res) => {
 
 export const signup: RequestHandler = async (req, res) => {
   try {
-    const { username, password } = req.body;
+    const { username, name, password } = req.body;
     const hash = await argon2.hash(password);
     const session = nanoid(20);
     const role = 'new';
-    await account.createAccount(username, hash, session, role);
+    await account.createAccount(username, name, hash, session, role);
 
     const accessToken = sign(
       { username, role },
