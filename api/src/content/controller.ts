@@ -34,7 +34,7 @@ export const getUserPosts: RequestHandler = async (req, res) => {
     const { user, page } = req.params;
     const offset = (!page || Number(page) - 1 <= 0)
       ? 0
-      : (Number(page) - 1) * 10;
+      : (Number(page) - 1) * 20;
 
     if (
       (role === 'admin' || role === 'mod')
@@ -55,9 +55,9 @@ export const getPosts: RequestHandler = async (req, res) => {
     const { page, tag, year } = req.query;
     const fixedTag = (tag) ? tag as string : null;
     const fixedYear = (year) ? Number(year): null;
-    const offset = (Number(page) - 1 <= 0)
+    const offset = (!page || Number(page) - 1 <= 0)
       ? 0
-      : (Number(page) - 1) * 10;
+      : (Number(page) - 1) * 12;
 
     const posts = await content.getPosts(offset, fixedTag, fixedYear);
     res.status(200).json(posts);
