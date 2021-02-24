@@ -13,4 +13,7 @@ router.use('/account', accountRouter);
 import authRouter from './auth/router';
 router.use('/auth', authRouter);
 
+import contentRouter from './content/router';
+router.use('/content', contentRouter);
+
 export default router;
