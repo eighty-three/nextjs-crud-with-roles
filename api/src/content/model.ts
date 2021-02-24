@@ -198,7 +198,7 @@ export const editPost = async (
 
   query.values = [post, title, url, newUrl];
   return await db.tx(async t => {
-    const postInfoQuery = getPostInfoQuery(username, url);
+    const postInfoQuery = getPostInfoQuery(url, username);
     const postExists = await t.oneOrNone(postInfoQuery);
 
     const tempArr = (tags) ? tags.slice() : [];
@@ -207,6 +207,7 @@ export const editPost = async (
         tempArr.map((tag) => t.one(createTagQuery(tag)))
       )).map((obj) => Number(obj.tag_id))
       : [];
+
 
     const queries = (tags) ? editTagsQuery(url, tag_ids) : [];
     queries.unshift(query);
