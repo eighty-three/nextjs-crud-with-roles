@@ -23,12 +23,18 @@ export const verifyToken: RequestHandler = async (req, res, next) => {
           res.clearCookie('refresh', { path: '/' });
           res.status(401).json({ error: 'You are not authenticated' });
         } else {
-          if (refreshToken) await token.setAccessToken(refreshToken, res);
+          if (refreshToken) {
+            res.locals.username = refreshToken.username;
+            res.locals.role = refreshToken.role;
+            await token.setAccessToken(refreshToken, res);
+          }
           next();
         }
 
         return;
       } else if (decoded) {
+        res.locals.username = decoded.username;
+        res.locals.role = decoded.role;
         next();
         return;
       }
@@ -64,7 +70,11 @@ export const verifyRole = (roles: string[]): RequestHandler => {
                 return;
               }
 
-              if (refreshToken) await token.setAccessToken(refreshToken, res);
+              if (refreshToken) {
+                res.locals.username = refreshToken.username;
+                res.locals.role = refreshToken.role;
+                await token.setAccessToken(refreshToken, res);
+              }
               next();
             }
 
@@ -76,6 +86,8 @@ export const verifyRole = (roles: string[]): RequestHandler => {
               return;
             }
 
+            res.locals.username = decoded.username;
+            res.locals.role = decoded.role;
             next();
             return;
           }
