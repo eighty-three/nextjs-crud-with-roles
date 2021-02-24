@@ -208,8 +208,7 @@ export const editPost = async (
       )).map((obj) => Number(obj.tag_id))
       : [];
 
-
-    const queries = (tags) ? editTagsQuery(url, tag_ids) : [];
+    const queries = editTagsQuery(url, tag_ids);
     queries.unshift(query);
 
     if (postExists) {
