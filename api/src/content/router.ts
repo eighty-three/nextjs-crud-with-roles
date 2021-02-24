@@ -10,7 +10,7 @@ import * as contentSchema from './schema';
 
 router.post('/create',
   validator(contentSchema.createPost, 'body'),
-  authToken.verifyToken,
+  authToken.verifyRole(['user', 'mod', 'admin']),
   content.createPost
 );
 
