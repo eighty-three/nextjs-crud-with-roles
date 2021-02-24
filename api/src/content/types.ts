@@ -7,7 +7,3 @@ export interface IPost {
   date: number;
   tag_names: string|null;
 }
-
-export interface IError {
-  error: string;
-}
