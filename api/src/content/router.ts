@@ -37,7 +37,7 @@ router.post('/delete',
 );
 
 router.post('/edit',
-  validator(contentSchema.deletePost, 'body'),
+  validator(contentSchema.editPost, 'body'),
   authToken.verifyToken,
   content.editPost
 );
