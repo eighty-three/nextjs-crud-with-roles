@@ -1,11 +1,16 @@
 import db from '@utils/db';
 
 const tables = [
+  'posts_tags',
+  'tags',
+  'posts',
   'accounts'
 ];
 
 const seqs = [
   { table: 'accounts', serialColumn: 'user_id' },
+  { table: 'posts', serialColumn: 'post_id' },
+  { table: 'tags', serialColumn: 'tag_id' },
 ];
 
 export const resetData = async (): Promise<void> => {
